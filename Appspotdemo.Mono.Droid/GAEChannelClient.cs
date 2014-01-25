@@ -75,36 +75,16 @@ namespace Appspotdemo.Mono.Droid
 		webView.LoadUrl("file:///android_asset/channel.html");
 	  }
 
-	  private class WebChromeClientAnonymousInnerClassHelper : WebChromeClient
-	  {
-		  private readonly GAEChannelClient outerInstance;
+        //public virtual bool onConsoleMessage(ConsoleMessage msg)
+        //{
+        //    Log.Debug(TAG, "console: " + msg.Message() + " at " + msg.SourceId() + ":" + msg.LineNumber());
+        //    return false;
+        //}
 
-		  public WebChromeClientAnonymousInnerClassHelper(GAEChannelClient outerInstance)
-		  {
-			  this.outerInstance = outerInstance;
-		  }
-
-		  public virtual bool onConsoleMessage(ConsoleMessage msg)
-		  {
-			Log.Debug(TAG, "console: " + msg.Message() + " at " + msg.SourceId() + ":" + msg.LineNumber());
-			return false;
-		  }
-	  }
-
-	  private class WebViewClientAnonymousInnerClassHelper : WebViewClient
-	  {
-		  private readonly GAEChannelClient outerInstance;
-
-		  public WebViewClientAnonymousInnerClassHelper(GAEChannelClient outerInstance)
-		  {
-			  this.outerInstance = outerInstance;
-		  }
-
-		  public virtual void onReceivedError(WebView view, int errorCode, string description, string failingUrl)
-		  {
-			Log.Error(TAG, "JS error: " + errorCode + " in " + failingUrl + ", desc: " + description);
-		  }
-	  }
+        //public virtual void onReceivedError(WebView view, int errorCode, string description, string failingUrl)
+        //{
+        //Log.Error(TAG, "JS error: " + errorCode + " in " + failingUrl + ", desc: " + description);
+        //}
 
 	  /// <summary>
 	  /// Close the connection to the AppEngine channel. </summary>
@@ -160,25 +140,7 @@ namespace Appspotdemo.Mono.Droid
 //ORIGINAL LINE: @JavascriptInterface public void onOpen()
 		public virtual void onOpen()
 		{
-		  activity.RunOnUiThread(new RunnableAnonymousInnerClassHelper(this));
-		}
-
-		private class RunnableAnonymousInnerClassHelper : Object, IRunnable
-		{
-			private readonly ProxyingMessageHandler outerInstance;
-
-			public RunnableAnonymousInnerClassHelper(ProxyingMessageHandler outerInstance)
-			{
-				this.outerInstance = outerInstance;
-			}
-
-			public void Run()
-			{
-			  if (!outerInstance.disconnected())
-			  {
-				outerInstance.handler.onOpen();
-			  }
-			}
+            activity.RunOnUiThread(() => handler.onOpen());
 		}
 
 //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
@@ -186,53 +148,14 @@ namespace Appspotdemo.Mono.Droid
 //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
 		public virtual void onMessage(string data)
 		{
-		  activity.RunOnUiThread(new RunnableAnonymousInnerClassHelper2(this, data));
-		}
-
-		private class RunnableAnonymousInnerClassHelper2 : Java.Lang.Object, IRunnable
-		{
-			private readonly ProxyingMessageHandler outerInstance;
-
-			private string data;
-
-			public RunnableAnonymousInnerClassHelper2(ProxyingMessageHandler outerInstance, string data)
-			{
-				this.outerInstance = outerInstance;
-				this.data = data;
-			}
-
-			public void Run()
-			{
-			  if (!outerInstance.disconnected())
-			  {
-				outerInstance.handler.onMessage(data);
-			  }
-			}
+            activity.RunOnUiThread(() => handler.onMessage(data));
 		}
 
 //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
 //ORIGINAL LINE: @JavascriptInterface public void onClose()
 		public virtual void onClose()
 		{
-		  activity.RunOnUiThread(new RunnableAnonymousInnerClassHelper3(this));
-		}
-
-		private class RunnableAnonymousInnerClassHelper3 : Object, IRunnable
-		{
-			private readonly ProxyingMessageHandler outerInstance;
-
-			public RunnableAnonymousInnerClassHelper3(ProxyingMessageHandler outerInstance)
-			{
-				this.outerInstance = outerInstance;
-			}
-
-			public void Run()
-			{
-			  if (!outerInstance.disconnected())
-			  {
-				outerInstance.handler.onClose();
-			  }
-			}
+		  activity.RunOnUiThread(() => handler.onClose());
 		}
 
 //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
@@ -240,30 +163,7 @@ namespace Appspotdemo.Mono.Droid
 //JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
 		public virtual void onError(int code, string description)
 		{
-		  activity.RunOnUiThread(new RunnableAnonymousInnerClassHelper4(this, code, description));
-		}
-
-		private class RunnableAnonymousInnerClassHelper4 : Object, IRunnable
-		{
-			private readonly ProxyingMessageHandler outerInstance;
-
-			private int code;
-			private string description;
-
-			public RunnableAnonymousInnerClassHelper4(ProxyingMessageHandler outerInstance, int code, string description)
-			{
-				this.outerInstance = outerInstance;
-				this.code = code;
-				this.description = description;
-			}
-
-			public void Run()
-			{
-			  if (!outerInstance.disconnected())
-			  {
-				outerInstance.handler.onError(code, description);
-			  }
-			}
+            activity.RunOnUiThread(() => handler.onError(code, description));
 		}
 	  }
 	}
